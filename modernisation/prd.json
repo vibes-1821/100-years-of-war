@@ -1,0 +1,142 @@
+{
+  "branchName": "migration/svelte5-timeline",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Project Scaffold",
+      "acceptanceCriteria": [
+        "Svelte 5 app initializes and compiles via Vite",
+        "Directory structure (src/lib/components, src/lib/state, src/lib/utils) is created",
+        "@guardian/iframe-messenger is installed",
+        "Vitest is configured for unit testing"
+      ],
+      "priority": 1,
+      "passes": false,
+      "notes": "Foundation step. Agents must ensure Svelte 5 Runes are enabled."
+    },
+    {
+      "id": "US-002",
+      "title": "Data Extraction & Conversion",
+      "acceptanceCriteria": [
+        "Node script successfully reads src/datahttpsfix.jsonp",
+        "storyjs_jsonp_data(...) wrapper is stripped via regex/string manipulation",
+        "Valid JSON is parsed and saved to src/lib/data/timeline.json"
+      ],
+      "priority": 1,
+      "passes": false,
+      "notes": "One-time extraction script."
+    },
+    {
+      "id": "US-003",
+      "title": "TypeScript Interfaces & Sanitization",
+      "acceptanceCriteria": [
+        "src/lib/types.ts exports TimelineEvent, TimelineEra, and TimelineAsset interfaces",
+        "dompurify utility is implemented to sanitize text and headline fields",
+        "Data loader module strictly types the parsed JSON"
+      ],
+      "priority": 1,
+      "passes": false,
+      "notes": "Crucial for security to prevent XSS from 2014-era HTML embedded in the JSON."
+    },
+    {
+      "id": "US-004",
+      "title": "Svelte 5 Runes State Store",
+      "acceptanceCriteria": [
+        "src/lib/state/timelineState.svelte.ts is created",
+        "Global state class exposes $state(activeIndex) and $state(events)",
+        "$derived(currentEvent) correctly returns the active event",
+        "next(), prev(), and goTo(index) methods update the state correctly"
+      ],
+      "priority": 2,
+      "passes": false,
+      "notes": "Agents must use Svelte 5 $state/$derived syntax, not Svelte 4 stores."
+    },
+    {
+      "id": "US-005",
+      "title": "Date Math Utilities",
+      "acceptanceCriteria": [
+        "src/lib/utils/dates.ts handles 'YYYY,MM,DD' string to JS Date conversion",
+        "Calculates total duration of the timeline",
+        "Calculates accurate percentage offsets for any given date within the timeline range",
+        "High unit test coverage using Vitest"
+      ],
+      "priority": 2,
+      "passes": false,
+      "notes": "Needed for plotting events on the Time Navigation bar."
+    },
+    {
+      "id": "US-006",
+      "title": "Media Renderer Component",
+      "acceptanceCriteria": [
+        "Media.svelte accepts a TimelineAsset object",
+        "Conditionally renders <img>, <video>, or <blockquote> based on asset type",
+        "Implements a UI fallback for broken or missing media links"
+      ],
+      "priority": 3,
+      "passes": false,
+      "notes": "Must handle stale 2014 CDN URLs gracefully."
+    },
+    {
+      "id": "US-007",
+      "title": "Event Slide Component",
+      "acceptanceCriteria": [
+        "Slide.svelte accepts a TimelineEvent object",
+        "Uses CSS Grid to split text content (left) and Media component (right)",
+        "Applies Guardian global web fonts and typography styles"
+      ],
+      "priority": 3,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-008",
+      "title": "Main Slider Track",
+      "acceptanceCriteria": [
+        "Slider.svelte renders an array of events using Slide.svelte",
+        "Implements horizontal scrolling with 'scroll-snap-type: x mandatory'",
+        "Binds scroll position to timelineState.activeIndex via Intersection Observer",
+        "Supports keyboard navigation (left/right arrows)"
+      ],
+      "priority": 3,
+      "passes": false,
+      "notes": "Core UX component. Needs smooth native scrolling."
+    },
+    {
+      "id": "US-009",
+      "title": "Time Navigation Bar",
+      "acceptanceCriteria": [
+        "TimeNav.svelte renders bottom navigation area",
+        "Plots year tick marks across the timeline duration",
+        "Renders clickable event markers at correct percentage widths using Date Math utils",
+        "Clicking a marker correctly calls timelineState.goTo(index)"
+      ],
+      "priority": 3,
+      "passes": false,
+      "notes": "Visual chronological map."
+    },
+    {
+      "id": "US-010",
+      "title": "App Assembly & Iframe Resizing",
+      "acceptanceCriteria": [
+        "App.svelte composes Slider and TimeNav components",
+        "Imports and executes iframeMessenger.enableAutoResize() on component mount",
+        "External links are intercepted and opened via iframeMessenger.navigate()"
+      ],
+      "priority": 4,
+      "passes": false,
+      "notes": "Integration phase. Ensures Guardian article template compatibility."
+    },
+    {
+      "id": "US-011",
+      "title": "CSS Custom Properties & Theming",
+      "acceptanceCriteria": [
+        "Guardian color palette (gold/black) extracted to app.css as CSS variables",
+        "Legacy absolute positioning replaced with responsive Flexbox/Grid",
+        "Visual design faithfully reproduces the dark theme of the original Interactive"
+      ],
+      "priority": 4,
+      "passes": false,
+      "notes": "Final polish to match the original 2014 aesthetic."
+    }
+  ]
+}
